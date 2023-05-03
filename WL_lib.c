@@ -28,10 +28,17 @@ File open_f(name_file name_file_open, mode mode_open)
     my_file = CreateFile(
         name_file_open,
         mode_open,
+<<<<<<< HEAD
         dwShareMode,
         NULL,                  // atributos de seguridad
         OPEN_EXISTING,         // abrir el archivo existente
         FILE_ATTRIBUTE_NORMAL, // atributos del archivo
+=======
+        FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+        NULL,
+        OPEN_ALWAYS,
+        FILE_ATTRIBUTE_NORMAL,
+>>>>>>> 78934c48da6623c576b3289ae5d47763068eda2c
         NULL);
 
 #elif __linux__
@@ -151,11 +158,58 @@ void open_file(MyFile *my_file, name_file name_file_open, mode mode_open)
     my_file->last_char = 0;
 }
 
+void write_file(MyFile *my_file, const char *data)
+{
+    
+    if (my_file->archivo == NULL)
+    {
+        my_file->size = WRITE_ERROR;
+        my_file->data = NULL;
+        return;
+    }
+    else
+    {
+        my_file->data = data;
+        if (my_file->size == 0)
+        {
+            my_file->size = strlen(my_file->data);
+        }
+#if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || defined(__NT__)
+#ifdef _WIN64
+OVERLAPPED overlapped = { 0 };
+
+        if (!WriteFileEx(my_file->archivo, my_file->data, my_file->size, &overlapped, NULL))
+        {
+        my_file->size = WRITE_ERROR;
+        my_file->data = NULL;
+            my_file->last_char = 0;
+        }
+#else
+        if (!WriteFile(my_file->archivo, my_file->data, my_file->size, &(my_file->last_char), NULL))
+        {
+        my_file->size = WRITE_ERROR;
+        my_file->data = NULL;
+        }
+#endif
+#elif __linux__
+        if (fputs(my_file->data, my_file->archivo) == EOF)
+        {
+        my_file->size = WRITE_ERROR;
+        my_file->data = NULL;
+        }
+#endif
+    }
+}
+
 void read_file(MyFile *my_file)
 {
     if (my_file->data == NULL)
     {
+<<<<<<< HEAD
         my_file->data = (char *)malloc(my_file->size * sizeof(char) + 1);
+=======
+        my_file->data = (char *)malloc(my_file->size * sizeof(char));
+>>>>>>> 78934c48da6623c576b3289ae5d47763068eda2c
     }
 #if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || defined(__NT__)
 #ifdef _WIN64

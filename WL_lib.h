@@ -36,17 +36,23 @@ typedef DWORD Size_file;
 #endif
 
 typedef enum mode {
-    READ     = GENERIC_READ,
-    WRITE    = GENERIC_WRITE,
-    APPEND   = FILE_APPEND_DATA,
-    TRUNCATE = TRUNCATE_EXISTING,
-    CREATE   = CREATE_ALWAYS,
-    EXCL     = CREATE_NEW
+    READ       = GENERIC_READ,
+    WRITE      = GENERIC_WRITE,
+    READ_WRITE = GENERIC_READ | GENERIC_WRITE,
+    APPEND     = FILE_APPEND_DATA,
+    TRUNCATE   = TRUNCATE_EXISTING,
+    CREATE     = CREATE_ALWAYS,
+    EXCL       = CREATE_NEW
 } mode;
 
 #define OPEN_ERROR INVALID_HANDLE_VALUE
+<<<<<<< HEAD
 #define OPEN_MODE_ERROR ERROR_INVALID_PARAMETER
 
+=======
+#define READ_ERROR 0
+#define WRITE_ERROR 0
+>>>>>>> 78934c48da6623c576b3289ae5d47763068eda2c
 #elif __linux__
 #include <fcntl.h>
 #include <stdlib.h>
@@ -61,12 +67,22 @@ typedef uint32_t Size_file;
 #endif
 
 typedef enum mode {
+<<<<<<< HEAD
     READ     = 0x01, // "r"
     WRITE    = 0x02, // "w"
     APPEND   = 0x04, // "a"
     TRUNCATE = 0x08, // "wt"
     CREATE   = 0x10, // "wc"
     EXCL     = 0x20  // "wx"
+=======
+    READ       = O_RDONLY,
+    WRITE      = O_WRONLY,
+    READ_WRITE = O_RDWR,
+    APPEND     = O_APPEND,
+    TRUNCATE   = O_TRUNC,
+    CREATE     = O_CREAT,
+    EXCL       = O_EXCL
+>>>>>>> 78934c48da6623c576b3289ae5d47763068eda2c
 } mode;
 
 #define OPEN_ERROR NULL
@@ -85,6 +101,7 @@ typedef struct MyFile {
 
 void open_file(MyFile*, name_file, mode);
 void read_file(MyFile*);
+void write_file(MyFile *my_file, const char *data);
 File open_f(name_file, mode);
 Size_file get_size_file(File);
 
