@@ -45,12 +45,15 @@ typedef enum mode {
 } mode;
 
 #define OPEN_ERROR INVALID_HANDLE_VALUE
-#define READ_ERROR 0
+#define OPEN_MODE_ERROR ERROR_INVALID_PARAMETER
+
 #elif __linux__
 #include <fcntl.h>
+#include <stdlib.h>
 #include <sys/stat.h>
 
 typedef FILE* File;
+typedef char* name_file;
 #if defined(_WIN64) || defined(__x86_64__) || defined(__ppc64__)
 typedef uint64_t Size_file;
 #else
@@ -58,17 +61,20 @@ typedef uint32_t Size_file;
 #endif
 
 typedef enum mode {
-    READ     = O_RDONLY,
-    WRITE    = O_WRONLY,
-    APPEND   = O_APPEND,
-    TRUNCATE = O_TRUNC,
-    CREATE   = O_CREAT,
-    EXCL     = O_EXCL
+    READ     = 0x01, // "r"
+    WRITE    = 0x02, // "w"
+    APPEND   = 0x04, // "a"
+    TRUNCATE = 0x08, // "wt"
+    CREATE   = 0x10, // "wc"
+    EXCL     = 0x20  // "wx"
 } mode;
 
 #define OPEN_ERROR NULL
+#define OPEN_MODE_ERROR -1
 
 #endif
+
+#define READ_ERROR 0
 
 typedef struct MyFile {
     File archivo;        // archivo abierto
