@@ -2,6 +2,7 @@
 #define __WL_LIB_H__
 
 #include <stdint.h>
+#include <string.h>
 
 #if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || defined(__NT__)
 #include <tchar.h>
@@ -46,13 +47,8 @@ typedef enum mode {
 } mode;
 
 #define OPEN_ERROR INVALID_HANDLE_VALUE
-<<<<<<< HEAD
 #define OPEN_MODE_ERROR ERROR_INVALID_PARAMETER
 
-=======
-#define READ_ERROR 0
-#define WRITE_ERROR 0
->>>>>>> 78934c48da6623c576b3289ae5d47763068eda2c
 #elif __linux__
 #include <fcntl.h>
 #include <stdlib.h>
@@ -67,31 +63,21 @@ typedef uint32_t Size_file;
 #endif
 
 typedef enum mode {
-<<<<<<< HEAD
     READ     = 0x01, // "r"
     WRITE    = 0x02, // "w"
     APPEND   = 0x04, // "a"
     TRUNCATE = 0x08, // "wt"
     CREATE   = 0x10, // "wc"
     EXCL     = 0x20  // "wx"
-=======
-    READ       = O_RDONLY,
-    WRITE      = O_WRONLY,
-    READ_WRITE = O_RDWR,
-    APPEND     = O_APPEND,
-    TRUNCATE   = O_TRUNC,
-    CREATE     = O_CREAT,
-    EXCL       = O_EXCL
->>>>>>> 78934c48da6623c576b3289ae5d47763068eda2c
 } mode;
 
 #define OPEN_ERROR NULL
-#define OPEN_MODE_ERROR -1
+#define OPEN_MODE_ERROR (File)-1
 
 #endif
 
 #define READ_ERROR 0
-
+#define WRITE_ERROR 0
 typedef struct MyFile {
     File archivo;        // archivo abierto
     Size_file size;      // tamaño del archivo

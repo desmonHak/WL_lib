@@ -6,44 +6,45 @@ File open_f(name_file name_file_open, mode mode_open)
     File my_file;
 #if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || defined(__NT__)
 
-    DWORD dwShareMode;
-    switch (mode_open & (READ | WRITE | APPEND | TRUNCATE | CREATE | EXCL))
+    DWORD dwShareMode, dwDesiredAccess, dwCreationDisposition;
+    switch (mode_open & (READ | WRITE))
     {
     case READ:
         // permitir acceso de lectura a otros procesos
         dwShareMode = FILE_SHARE_READ;
+        dwDesiredAccess = READ;
+        dwCreationDisposition = OPEN_EXISTING;
         break;
     case WRITE:
         // permitir acceso de escritura a otros procesos
         dwShareMode = FILE_SHARE_WRITE;
+        dwDesiredAccess = WRITE;
+        dwCreationDisposition = OPEN_EXISTING;
         break;
     case READ | WRITE:
         // permitir acceso de escritura y lectura a otros procesos
         dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE;
+        dwDesiredAccess = READ | WRITE;
+        dwCreationDisposition = OPEN_ALWAYS;
     default:
         // permite acceso de lectura, escritura y eliminacion para otros procesos
         dwShareMode = FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
+        dwDesiredAccess = mode_open;
+        dwCreationDisposition = OPEN_ALWAYS;
         break;
     }
+
     my_file = CreateFile(
         name_file_open,
-        mode_open,
-<<<<<<< HEAD
+        dwDesiredAccess,
         dwShareMode,
         NULL,                  // atributos de seguridad
-        OPEN_EXISTING,         // abrir el archivo existente
+        dwCreationDisposition,         // abrir el archivo existente
         FILE_ATTRIBUTE_NORMAL, // atributos del archivo
-=======
-        FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
-        NULL,
-        OPEN_ALWAYS,
-        FILE_ATTRIBUTE_NORMAL,
->>>>>>> 78934c48da6623c576b3289ae5d47763068eda2c
         NULL);
 
 #elif __linux__
     char mode_linux[4] = {0, 0, 0, 0};
-    printf("%d\n", mode_open);
     switch (mode_open & (READ | WRITE | APPEND | TRUNCATE | CREATE | EXCL))
     {
     case READ:
@@ -89,8 +90,6 @@ File open_f(name_file name_file_open, mode mode_open)
         // el modo de apertura no es adecuado
         return OPEN_MODE_ERROR;
     }
-
-    printf("%s\n", mode_linux);
     my_file = fopen(
         name_file_open,
         mode_linux);
@@ -169,7 +168,7 @@ void write_file(MyFile *my_file, const char *data)
     }
     else
     {
-        my_file->data = data;
+        my_file->data = (char*)data;
         if (my_file->size == 0)
         {
             my_file->size = strlen(my_file->data);
@@ -205,11 +204,7 @@ void read_file(MyFile *my_file)
 {
     if (my_file->data == NULL)
     {
-<<<<<<< HEAD
-        my_file->data = (char *)malloc(my_file->size * sizeof(char) + 1);
-=======
         my_file->data = (char *)malloc(my_file->size * sizeof(char));
->>>>>>> 78934c48da6623c576b3289ae5d47763068eda2c
     }
 #if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || defined(__NT__)
 #ifdef _WIN64
