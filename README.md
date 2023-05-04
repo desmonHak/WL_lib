@@ -25,20 +25,20 @@ open_file(&mi_archivo, "archivo.txt", READ);
 MyFile* mi_archivo = (MyFile*) malloc(sizeof(MyFile));
 open_file(mi_archivo,  "archivo.txt", READ);
 
-````
+```
 
 La funcion `open_file` no retorna ningun valor, aparte de la estructura de tipo `MyFile` recibe un valor de tipo `name_file` el cual a de ser el nombre del archivo y un tercer argumento `mode`
 
 ```C
 void open_file(MyFile*, name_file, mode);
-````
+```
 
 ### read_file
 
 La funcion `read_file` permite leer el contenido de un archivo. Recibe un puntero de una estructura de tipo `MyFile`, este a de ser el valor que se uso junto a `open_file` con el modo `READ` minimo para poder efectuar la lectura:
 ```C
 void read_file(MyFile*);
-````
+```
 
 Ejemplo:
 
@@ -50,6 +50,38 @@ read_file(&mi_archivo);
 // Ejemplo 2(mi_archivo con malloc):
 read_file(mi_archivo);
 
-````
+```
 
+### get_data_file
+
+Esta funcion permite obtener los datos que se han leeido o se han escrito. recibe un objeto de tipo `MyFile`.:
+
+```C
+char *get_data_file(MyFile);
+```
+
+Ejemplo
+```C
+
+printf("Datos del archivo leeido: %s\n", get_data_file(mi_archivo));
+
+```
+
+### close_file
+
+Esta funcion es la encargda de cerrar el archivo tras realizar las operaciones con el mismo. Este recibe un puntero a una esstructura MyFile.
+```C
+void close_file(MyFile *)
+```
+
+Ejemplo:
+```C
+
+// Ejemplo 1(mi_archivo sin malloc):  
+close_file(&mi_archivo);
+
+// Ejemplo 2(mi_archivo con malloc):
+close_file(mi_archivo);
+
+```
 ----

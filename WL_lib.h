@@ -88,6 +88,7 @@ typedef struct MyFile {
 
 void open_file(MyFile*, name_file, mode);
 void read_file(MyFile*);
+void close_file(MyFile *);
 void write_file(MyFile *my_file, const char *data);
 File open_f(name_file, mode);
 Size_file _get_size_file(File); // obtiene el tamaño del archivo
