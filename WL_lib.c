@@ -1,22 +1,33 @@
 #ifndef __WL_LIB_C__
 #define __WL_LIB_C__
 
-Size_file get_size_file(MyFile my_file){
+Size_file get_size_file(MyFile my_file)
+{
     return my_file.size;
 }
-bool error_open_file(MyFile my_file) {
-    if (my_file.archivo == OPEN_ERROR) return true;
-    else return false;
+bool error_open_file(MyFile my_file)
+{
+    if (my_file.archivo == OPEN_ERROR)
+        return true;
+    else
+        return false;
 }
-bool error_read_file(MyFile my_file) {
-    if (my_file.data == READ_ERROR) return true;
-    else return false;
+bool error_read_file(MyFile my_file)
+{
+    if (my_file.data == READ_ERROR)
+        return true;
+    else
+        return false;
 }
-bool error_mode_file(MyFile my_file) {
-    if (my_file.archivo == OPEN_MODE_ERROR) return true;
-    else return false;
+bool error_mode_file(MyFile my_file)
+{
+    if (my_file.archivo == OPEN_MODE_ERROR)
+        return true;
+    else
+        return false;
 }
-char *get_data_file(MyFile my_file){
+char *get_data_file(MyFile my_file)
+{
     return my_file.data;
 }
 
@@ -58,7 +69,7 @@ File open_f(name_file name_file_open, mode mode_open)
         dwDesiredAccess,
         dwShareMode,
         NULL,                  // atributos de seguridad
-        dwCreationDisposition,         // abrir el archivo existente
+        dwCreationDisposition, // abrir el archivo existente
         FILE_ATTRIBUTE_NORMAL, // atributos del archivo
         NULL);
 
@@ -178,7 +189,7 @@ void open_file(MyFile *my_file, name_file name_file_open, mode mode_open)
 
 void write_file(MyFile *my_file, const char *data)
 {
-    
+
     if (my_file->archivo == NULL)
     {
         my_file->size = WRITE_ERROR;
@@ -187,33 +198,33 @@ void write_file(MyFile *my_file, const char *data)
     }
     else
     {
-        my_file->data = (char*)data;
+        my_file->data = (char *)data;
         if (my_file->size == 0)
         {
             my_file->size = strlen(my_file->data);
         }
 #if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || defined(__NT__)
 #ifdef _WIN64
-OVERLAPPED overlapped = { 0 };
+        OVERLAPPED overlapped = {0};
 
         if (!WriteFileEx(my_file->archivo, my_file->data, my_file->size, &overlapped, NULL))
         {
-        my_file->size = WRITE_ERROR;
-        my_file->data = NULL;
+            my_file->size = WRITE_ERROR;
+            my_file->data = NULL;
             my_file->last_char = 0;
         }
 #else
         if (!WriteFile(my_file->archivo, my_file->data, my_file->size, &(my_file->last_char), NULL))
         {
-        my_file->size = WRITE_ERROR;
-        my_file->data = NULL;
+            my_file->size = WRITE_ERROR;
+            my_file->data = NULL;
         }
 #endif
 #elif __linux__
         if (fputs(my_file->data, my_file->archivo) == EOF)
         {
-        my_file->size = WRITE_ERROR;
-        my_file->data = NULL;
+            my_file->size = WRITE_ERROR;
+            my_file->data = NULL;
         }
 #endif
     }
