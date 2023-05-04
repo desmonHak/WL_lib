@@ -54,7 +54,7 @@ read_file(mi_archivo);
 
 ### get_data_file
 
-Esta funcion permite obtener los datos que se han leeido o se han escrito. recibe un objeto de tipo `MyFile`.:
+Esta funcion permite obtener los datos que se han leeido o se han escrito. recibe un objeto de tipo `MyFile`:
 
 ```C
 char *get_data_file(MyFile);
@@ -69,7 +69,7 @@ printf("Datos del archivo leeido: %s\n", get_data_file(mi_archivo));
 
 ### close_file
 
-Esta funcion es la encargda de cerrar el archivo tras realizar las operaciones con el mismo. Este recibe un puntero a una esstructura MyFile.
+Esta funcion es la encargda de cerrar el archivo tras realizar las operaciones con el mismo. Este recibe un puntero a una esstructura `MyFile`.
 ```C
 void close_file(MyFile *)
 ```
@@ -84,4 +84,26 @@ close_file(&mi_archivo);
 close_file(mi_archivo);
 
 ```
+
+### write_file
+
+Esta funcion permite escribir datos en un archivo. Recibe un puntero a una estrcutura `MyFile` y un puntero de tipo `const char *` donde se alojen los datos a escribir en el mismo.
+
+```C
+void write_file(MyFile *my_file, const char *data);
+```
+
+Ejemplo:
+```C
+
+const char msg[] = "Hola Mundo\n";
+
+// Ejemplo 1(mi_archivo sin malloc):  
+write_file(&mi_archivo, msg);
+
+// Ejemplo 2(mi_archivo con malloc):
+write_file(mi_archivo, msg);
+
+```
+
 ----

@@ -35,7 +35,7 @@ int main(){
     mi_archivo_cpy.size = get_size_file(mi_archivo);
     printf("size del archivo: %d\n", get_size_file(mi_archivo_cpy));
 
-    write_file(&mi_archivo_cpy, mi_archivo.data);
+    write_file(&mi_archivo_cpy, get_data_file(mi_archivo));
     if(error_read_file(mi_archivo_cpy)){
         printf("Error al escribir el archivo\n");
     }
