@@ -1,6 +1,25 @@
 #ifndef __WL_LIB_C__
 #define __WL_LIB_C__
 
+Size_file get_size_file(MyFile my_file){
+    return my_file.size;
+}
+bool error_open_file(MyFile my_file) {
+    if (my_file.archivo == OPEN_ERROR) return true;
+    else return false;
+}
+bool error_read_file(MyFile my_file) {
+    if (my_file.data == READ_ERROR) return true;
+    else return false;
+}
+bool error_mode_file(MyFile my_file) {
+    if (my_file.archivo == OPEN_MODE_ERROR) return true;
+    else return false;
+}
+char *get_data_file(MyFile my_file){
+    return my_file.data;
+}
+
 File open_f(name_file name_file_open, mode mode_open)
 {
     File my_file;
@@ -102,7 +121,7 @@ File open_f(name_file name_file_open, mode mode_open)
     return my_file;
 }
 
-Size_file get_size_file(File my_file)
+Size_file _get_size_file(File my_file)
 {
 
     Size_file fileSize = 0;
@@ -152,7 +171,7 @@ Size_file get_size_file(File my_file)
 void open_file(MyFile *my_file, name_file name_file_open, mode mode_open)
 {
     my_file->archivo = open_f(name_file_open, mode_open);
-    my_file->size = get_size_file(my_file->archivo);
+    my_file->size = _get_size_file(my_file->archivo);
     my_file->data = NULL;
     my_file->last_char = 0;
 }

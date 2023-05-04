@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <string.h>
+#include <stdbool.h>
 
 #if defined(WIN32) || defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || defined(__NT__)
 #include <tchar.h>
@@ -89,7 +90,12 @@ void open_file(MyFile*, name_file, mode);
 void read_file(MyFile*);
 void write_file(MyFile *my_file, const char *data);
 File open_f(name_file, mode);
-Size_file get_size_file(File);
+Size_file _get_size_file(File); // obtiene el tamaño del archivo
+Size_file get_size_file(MyFile); // obtiene el tamaño del archivo mediante la estructura
+bool error_open_file(MyFile); // true si error al abrir el archivo
+bool error_read_file(MyFile); // true si error al leer el archivo
+bool error_mode_file(MyFile); // true si el modo de apertura no es correcto
+char *get_data_file(MyFile); // obtiene los datos del archivo.
 
 #include "WL_lib.c"
 #else
